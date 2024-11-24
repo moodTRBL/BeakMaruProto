@@ -4,6 +4,7 @@ import com.beakmaruproto.member.Member
 import reactor.core.publisher.Mono
 
 data class MemberUpdateDTO(
+    val originUsername: String,
     val username: String,
     val password: String,
     val email: String,

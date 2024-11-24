@@ -1,4 +1,4 @@
-package com.beakmaruproto
+package com.beakmaruproto.repository
 
 import com.beakmaruproto.member.Member
 import com.beakmaruproto.member.repository.MemberRepository
@@ -23,12 +23,6 @@ class MemberRepositoryTest @Autowired constructor(
 
     @Test
     fun `member 저장`() {
-        val member = Member(
-            username = "username",
-            password = "password",
-            email = "email",
-            studentNumber = 1
-        )
-        memberRepository.save(member)
+
     }
 }

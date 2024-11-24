@@ -14,15 +14,13 @@ class MemberServiceImpl @Autowired constructor(
     private val memberRepository: MemberRepository
 ) : MemberService {
     override suspend fun singUp(memberSaveDTO: MemberSaveDTO): Mono<MemberDTO> {
-//        return Mono.just(memberRepository.save(memberSaveDTO.toEntity()))
-//            .flatMap { it -> it.toDto() }
         return validateMember(memberSaveDTO.username)
             .then(mono { memberRepository.save(memberSaveDTO.toEntity()) })
             .flatMap { it -> it.toDto() }
     }
 
     override suspend fun updateMember(memberUpdateDTO: MemberUpdateDTO): Mono<MemberDTO> {
-        return memberRepository.findByUsername(memberUpdateDTO.username)
+        return memberRepository.findByUsername(memberUpdateDTO.originUsername)
             .flatMap { findMember -> memberUpdateDTO.toUpdateEntity(findMember) }
             .flatMap { updateMember -> mono { memberRepository.save(updateMember) } }
             .flatMap { it -> it.toDto() }

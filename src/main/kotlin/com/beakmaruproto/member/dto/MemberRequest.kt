@@ -1,6 +1,7 @@
 package com.beakmaruproto.member.dto
 
 data class MemberRequest(
+    val originUsername: String,
     val username: String,
     val password: String,
     val email: String,
@@ -14,6 +15,7 @@ data class MemberRequest(
     )
 
     fun toUpdateDTO() = MemberUpdateDTO(
+        originUsername = originUsername,
         username = username,
         password = password,
         email = email,
