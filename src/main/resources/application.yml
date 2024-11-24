@@ -1,0 +1,78 @@
+spring:
+  profiles:
+    active: deploy
+---
+server:
+  port: 80
+
+spring:
+  config:
+    activate:
+      on-profile: deploy
+  r2dbc:
+    url: r2dbc:mysql://43.201.215.174:3306/BeakMaruProto?serverTimezone=Asia/Seoul
+    username: root
+    password: root
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: classpath*:db-init.sql
+#      platform: mysql
+  logging:
+    level:
+      io.asyncer.r2dbc.mysql: INFO
+      io.asyncer.r2dbc.mysql.QUERY: DEBUG
+  data:
+    redis:
+      host: 43.201.215.174
+      port: 6379
+
+---
+server:
+  port: 80
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  r2dbc:
+    url: r2dbc:mysql://localhost:3307/BeakMaruProto?serverTimezone=Asia/Seoul
+    username: root
+    password: root
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: classpath*:db-init.sql
+#      platform: mysql
+  logging:
+    level:
+      io.asyncer.r2dbc.mysql: INFO
+      io.asyncer.r2dbc.mysql.QUERY: DEBUG
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/BeakMaruProto?serverTimezone=Asia/Seoul
+    username: root
+    password: root
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath*:schema/db-init.sql
+      platform: mysql
+  logging:
+    level:
+      io.asyncer.r2dbc.mysql: INFO
+      io.asyncer.r2dbc.mysql.QUERY: DEBUG
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
