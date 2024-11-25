@@ -1,5 +1,6 @@
-package com.beakmaruproto.member
+package com.beakmaruproto.global
 
+import com.beakmaruproto.global.dto.MessageDTO
 import com.beakmaruproto.logger
 import org.springframework.http.codec.ServerSentEvent
 import org.springframework.stereotype.Component

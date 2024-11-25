@@ -35,6 +35,14 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     testImplementation("io.projectreactor:reactor-test")
 
+    //redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+    implementation ("org.springframework.session:spring-session-data-redis")
+
+    //security
+    implementation ("org.springframework.boot:spring-boot-starter-security")
+
     //log4j
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
 

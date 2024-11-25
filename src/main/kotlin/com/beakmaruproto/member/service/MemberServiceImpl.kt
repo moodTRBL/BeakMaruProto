@@ -1,7 +1,7 @@
 package com.beakmaruproto.member.service
 
-import com.beakmaruproto.member.NotificationType
-import com.beakmaruproto.member.SSESendProcessor
+import com.beakmaruproto.global.NotificationType
+import com.beakmaruproto.global.SSESendProcessor
 import com.beakmaruproto.member.dto.MemberDTO
 import com.beakmaruproto.member.dto.MemberSaveDTO
 import com.beakmaruproto.member.dto.MemberUpdateDTO
@@ -29,6 +29,11 @@ class MemberServiceImpl @Autowired constructor(
             .flatMap { updateMember -> mono { memberRepository.save(updateMember) } }
             .flatMap { it -> it.toDto() }
             .doOnNext{ sseSendProcessor.personalSend(it.memberId, NotificationType.to(NotificationType.MEMBER_UPDATE)) }
+    }
+
+    override fun getMember(username: String): Mono<MemberDTO> {
+        return memberRepository.findByUsername(username)
+            .flatMap { member -> member.toDto() }
     }
 
     private suspend fun validateMember(username: String): Mono<Void> {

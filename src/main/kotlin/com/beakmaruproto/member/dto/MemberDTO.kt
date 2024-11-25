@@ -8,8 +8,6 @@ data class MemberDTO(
     val password: String,
     val email: String,
     val studentNumber: Int,
-    val createTime: LocalDateTime,
-    val updateTime: LocalDateTime
 ) {
     fun toSaveResponse() = MemberResponse(
         username = username,

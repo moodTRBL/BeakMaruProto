@@ -1,5 +1,6 @@
-package com.beakmaruproto.member
+package com.beakmaruproto.global.controller
 
+import com.beakmaruproto.global.SSESendProcessor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity

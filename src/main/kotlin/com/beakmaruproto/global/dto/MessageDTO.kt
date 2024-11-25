@@ -1,6 +1,4 @@
-package com.beakmaruproto.member
-
-import java.time.LocalDateTime
+package com.beakmaruproto.global.dto
 
 data class MessageDTO(
     val messageId : String,

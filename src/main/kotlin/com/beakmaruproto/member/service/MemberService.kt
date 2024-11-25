@@ -8,4 +8,5 @@ import reactor.core.publisher.Mono
 interface MemberService {
     suspend fun singUp(memberSaveDTO: MemberSaveDTO): Mono<MemberDTO>
     suspend fun updateMember(memberUpdateDTO: MemberUpdateDTO): Mono<MemberDTO>
+    fun getMember(username: String): Mono<MemberDTO>
 }

@@ -1,4 +1,6 @@
-package com.beakmaruproto.member
+package com.beakmaruproto.global
+
+import com.beakmaruproto.global.dto.MessageDTO
 
 enum class NotificationType(
     private val messageDTO: MessageDTO

@@ -34,8 +34,6 @@ data class Member(
         password = password,
         email = email,
         studentNumber = studentNumber,
-        createTime = createTime!!,
-        updateTime = updateTime!!
     )
     )
 }
