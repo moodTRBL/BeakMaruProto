@@ -21,6 +21,7 @@ repositories {
 dependencies {
     //web
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework:spring-websocket")
 
     //spring
     testImplementation("org.springframework.boot:spring-boot-starter-test")

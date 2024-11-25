@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 import java.time.LocalDateTime
 
 @Table
-class Member(
+data class Member(
     @Id
     val id: Long? = null,
 

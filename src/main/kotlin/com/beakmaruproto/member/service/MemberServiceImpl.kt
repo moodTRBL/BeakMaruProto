@@ -1,5 +1,7 @@
 package com.beakmaruproto.member.service
 
+import com.beakmaruproto.member.NotificationType
+import com.beakmaruproto.member.SSESendProcessor
 import com.beakmaruproto.member.dto.MemberDTO
 import com.beakmaruproto.member.dto.MemberSaveDTO
 import com.beakmaruproto.member.dto.MemberUpdateDTO
@@ -11,12 +13,14 @@ import reactor.core.publisher.Mono
 
 @Service
 class MemberServiceImpl @Autowired constructor(
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    private val sseSendProcessor: SSESendProcessor
 ) : MemberService {
     override suspend fun singUp(memberSaveDTO: MemberSaveDTO): Mono<MemberDTO> {
         return validateMember(memberSaveDTO.username)
             .then(mono { memberRepository.save(memberSaveDTO.toEntity()) })
             .flatMap { it -> it.toDto() }
+            .doOnNext{ sseSendProcessor.personalSend(it.memberId, NotificationType.to(NotificationType.MEMBER_SAVE)) }
     }
 
     override suspend fun updateMember(memberUpdateDTO: MemberUpdateDTO): Mono<MemberDTO> {
@@ -24,6 +28,7 @@ class MemberServiceImpl @Autowired constructor(
             .flatMap { findMember -> memberUpdateDTO.toUpdateEntity(findMember) }
             .flatMap { updateMember -> mono { memberRepository.save(updateMember) } }
             .flatMap { it -> it.toDto() }
+            .doOnNext{ sseSendProcessor.personalSend(it.memberId, NotificationType.to(NotificationType.MEMBER_UPDATE)) }
     }
 
     private suspend fun validateMember(username: String): Mono<Void> {

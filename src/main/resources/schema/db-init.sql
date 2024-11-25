@@ -18,6 +18,7 @@ CREATE TABLE board (
     content VARCHAR(255) NOT NULL,
     create_time DATETIME NOT NULL,
     update_time DATETIME NOT NULL,
+    is_anonymous BOOLEAN NOT NULL,
     member_id BIGINT NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member(id)
 );
