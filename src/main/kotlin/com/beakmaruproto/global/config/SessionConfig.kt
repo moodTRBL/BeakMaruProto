@@ -21,4 +21,9 @@ class SessionConfig {
     fun springSessionDefaultRedisSerializer(): GenericJackson2JsonRedisSerializer {
         return GenericJackson2JsonRedisSerializer()
     }
+//
+//    @Bean
+//    fun springSessionRedisNamespace(): String {
+//        return "shboard"
+//    }
 }

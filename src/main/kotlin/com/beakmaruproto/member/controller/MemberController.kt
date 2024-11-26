@@ -44,7 +44,10 @@ class MemberController @Autowired constructor(
             .subscribeOn(Schedulers.boundedElastic())
             .flatMap { if (it == null) Mono.empty() else Mono.just(it) }
             .filter { member -> memberLoginRequest.password == member.password }
-            .doOnNext { member ->  session.attributes["member"] = member }
+            .doOnNext { member ->
+                session.attributes["member"] = member
+                log.info("login success : ${session.attributes["member"]}")
+            }
             .map { dto ->
                 ResponseEntity
                     .ok()

@@ -5,6 +5,7 @@
       <option name="customHeaders">
         <set>
           <option value="memberId" />
+          <option value="X-AUTH-TOKEN" />
         </set>
       </option>
     </inspection_tool>
