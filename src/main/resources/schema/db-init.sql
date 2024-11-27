@@ -6,9 +6,21 @@ CREATE TABLE member (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    nickname VARCHAR(255) NOT NULL,
     student_number DECIMAL NOT NULL,
     create_time DATETIME NOT NULL,
     update_time DATETIME NOT NULL
+);
+
+DROP TABLE IF EXISTS follow;
+CREATE TABLE follow (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    from_id BIGINT NOT NULL,
+    to_id BIGINT NOT NULL,
+    create_time DATETIME NOT NULL,
+    update_time DATETIME NOT NULL,
+    FOREIGN KEY (from_id) REFERENCES member(id),
+    FOREIGN KEY (to_id) REFERENCES member(id)
 );
 
 DROP TABLE IF EXISTS board;

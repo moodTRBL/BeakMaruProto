@@ -5,12 +5,14 @@ data class MemberRequest(
     val username: String,
     val password: String,
     val email: String,
+    val nickname: String,
     val studentNumber: Int
 ) {
     fun toSaveDTO() = MemberSaveDTO(
         username = username,
         password = password,
         email = email,
+        nickname = nickname,
         studentNumber = studentNumber
     )
 
@@ -19,6 +21,7 @@ data class MemberRequest(
         username = username,
         password = password,
         email = email,
+        nickname = nickname,
         studentNumber = studentNumber
     )
 }

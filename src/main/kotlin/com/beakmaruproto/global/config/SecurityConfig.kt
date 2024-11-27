@@ -30,13 +30,6 @@ class SecurityConfig {
                 .pathMatchers(*permitAllList.toTypedArray()).permitAll()
                 .anyExchange().authenticated()
             }
-            //.addFilterAt(SessionAuthenticationFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
-            //.addFilterBefore(SessionAuthenticationFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
             .build()
     }
-
-//    @Bean
-//    fun sessionAuthenticationFilter(): WebFilter {
-//        return SessionAuthenticationFilter()
-//    }
 }

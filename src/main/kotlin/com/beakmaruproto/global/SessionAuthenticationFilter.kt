@@ -35,15 +35,5 @@ class SessionAuthenticationFilter : WebFilter {
                     session.attributes["member"].let { if (it == null) throw Exception("인증되지 않은 사용자") }
                 }.then(chain.filter(exchange))
         }
-//        permitList.let { it ->
-//            if (it.contains(request.uri.path)) {
-//                return chain.filter(exchange)
-//            } else {
-//                return exchange.session
-//                    .doOnNext { session->
-//                        session.attributes["member"].let { if (it == null) throw Exception("인증되지 않은 사용자") }
-//                    }.then(chain.filter(exchange))
-//            }
-//        }
     }
 }

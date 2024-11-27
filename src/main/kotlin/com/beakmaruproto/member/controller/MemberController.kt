@@ -31,7 +31,7 @@ class MemberController @Autowired constructor(
 
     @PostMapping("/member/sign-up")
     suspend fun signUp(@RequestBody memberRequest: MemberRequest): Mono<ResponseEntity<MemberResponse>> {
-        return memberService.singUp(memberRequest.toSaveDTO())
+        return memberService.signUp(memberRequest.toSaveDTO())
             .flatMap { dto -> mono { ResponseEntity.ok(dto.toSaveResponse()) } }
     }
 
@@ -40,15 +40,11 @@ class MemberController @Autowired constructor(
        @RequestBody memberLoginRequest: MemberLoginRequest,
        session: WebSession
     ): Mono<ResponseEntity<MemberDTO>> {
-        return Mono.defer { memberService.getMember(memberLoginRequest.username) }
-            .subscribeOn(Schedulers.boundedElastic())
-            .flatMap { if (it == null) Mono.empty() else Mono.just(it) }
-            .filter { member -> memberLoginRequest.password == member.password }
+        return memberService.signIn(memberLoginRequest.toLoginDTO())
             .doOnNext { member ->
                 session.attributes["member"] = member
                 log.info("login success : ${session.attributes["member"]}")
-            }
-            .map { dto ->
+            }.map { dto ->
                 ResponseEntity
                     .ok()
                     .header("X-AUTH-TOKEN", session.id)

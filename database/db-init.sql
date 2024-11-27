@@ -17,4 +17,15 @@ CREATE TABLE member (
     update_time DATETIME NOT NULL
 );
 
+DROP TABLE IF EXISTS follow;
+CREATE TABLE follow (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    from_id BIGINT NOT NULL,
+    to_id BIGINT NOT NULL,
+    create_time DATETIME NOT NULL,
+    update_time DATETIME NOT NULL,
+    FOREIGN KEY (from_id) REFERENCES member(id),
+    FOREIGN KEY (to_id) REFERENCES member(id)
+);
+
 SET FOREIGN_KEY_CHECKS=1;

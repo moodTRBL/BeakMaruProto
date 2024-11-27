@@ -20,9 +20,4 @@ class MemberRepositoryTest @Autowired constructor(
         r2dbcEntityTemplate.databaseClient.sql("TRUNCATE TABLE member")
         r2dbcEntityTemplate.databaseClient.sql("SET FOREIGN_KEY_CHECKS=1")
     }
-
-    @Test
-    fun `member 저장`() {
-
-    }
 }

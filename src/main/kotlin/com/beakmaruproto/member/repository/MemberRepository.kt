@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 
 @Repository
-interface MemberRepository : CoroutineCrudRepository<Member, Long> {
+interface MemberRepository : CoroutineCrudRepository<Member, Long>, MemberRepositoryCustom {
     fun findByUsername(username: String): Mono<Member>
     fun existsByUsername(username: String): Mono<Boolean>
 }

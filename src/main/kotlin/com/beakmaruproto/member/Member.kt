@@ -19,6 +19,8 @@ data class Member(
 
     var email: String,
 
+    var nickname: String,
+
     var studentNumber: Int,
 
     @CreatedDate
@@ -29,11 +31,11 @@ data class Member(
 ) {
     fun toDto() = Mono.just(
         MemberDTO(
-        memberId = id!!,
-        username = username,
-        password = password,
-        email = email,
-        studentNumber = studentNumber,
-    )
-    )
+            memberId = id!!,
+            username = username,
+            password = password,
+            email = email,
+            nickname = nickname,
+            studentNumber = studentNumber,
+    ))
 }

@@ -27,6 +27,7 @@ class MemberServiceImplTest @Autowired constructor(
             username = "username",
             password = "password",
             email = "email",
+            nickname = "nickname",
             studentNumber = 20221482
         )
         StepVerifier
@@ -55,12 +56,14 @@ class MemberServiceImplTest @Autowired constructor(
             username = "username",
             password = "password",
             email = "email",
+            nickname = "nickname",
             studentNumber = 20221482
         )
         val savedMember = memberRepository.save(member)
         savedMember.username = "update"
         savedMember.password = "update"
         savedMember.email = "update"
+        savedMember.nickname = "update"
         savedMember.studentNumber = 20201482
 
         StepVerifier
@@ -69,6 +72,7 @@ class MemberServiceImplTest @Autowired constructor(
                 it.username shouldBe savedMember.username
                 it.password shouldBe savedMember.password
                 it.email shouldBe savedMember.email
+                it.nickname shouldBe savedMember.nickname
                 it.studentNumber shouldBe savedMember.studentNumber
             }
             .expectComplete()
