@@ -7,6 +7,7 @@ import org.springframework.data.r2dbc.convert.MappingR2dbcConverter
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @Repository
 class FollowCustomRepositoryImpl @Autowired constructor(
@@ -29,5 +30,17 @@ class FollowCustomRepositoryImpl @Autowired constructor(
             .bind("memberId", memberId)
             .map { row,metaData -> r2dbcConverter.read(FollowDTO::class.java, row) }
             .all()
+    }
+
+    override suspend fun deleteFollowing(fromId: Long, toId: Long) {
+        val sql = """
+            DELETE
+            FROM follow f
+            WHERE f.from_id = :fromId and f.to_id = :toId
+        """.trimIndent()
+        r2dbcEntityTemplate.databaseClient
+            .sql(sql)
+            .bind("fromId", fromId)
+            .bind("toId", toId)
     }
 }

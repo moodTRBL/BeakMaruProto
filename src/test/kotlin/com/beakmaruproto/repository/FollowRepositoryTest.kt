@@ -5,8 +5,10 @@ import com.beakmaruproto.follow.repository.FollowRepository
 import com.beakmaruproto.member.Member
 import com.beakmaruproto.member.dto.MemberDTO
 import com.beakmaruproto.member.repository.MemberRepository
+import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.asFlux
@@ -86,13 +88,7 @@ class FollowRepositoryTest(
             ))
         }
         followRepository.findAll().toList().size shouldBe 4
-        val process = followRepository.findFollowingsId(0)
-            .map { it -> it.followId }
-            .collectList()
-            .doOnNext { mono { followRepository.deleteAllById(it) } }
-            //.flatMap { mono { followRepository.deleteAllById(it) } }
-        StepVerifier.create(process)
-            .verifyComplete()
-        followRepository.findAll().toList().size shouldBe 0
+        followRepository.deleteFollowing(members[0].id!!, members[1].id!!)
+        followRepository.findAll().toList().size shouldBe 3
     }
 })

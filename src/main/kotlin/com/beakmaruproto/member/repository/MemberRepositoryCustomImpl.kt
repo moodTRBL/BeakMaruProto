@@ -1,6 +1,7 @@
 package com.beakmaruproto.member.repository
 
 import com.beakmaruproto.member.dto.MemberDTO
+import kotlinx.coroutines.reactive.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.r2dbc.convert.MappingR2dbcConverter
