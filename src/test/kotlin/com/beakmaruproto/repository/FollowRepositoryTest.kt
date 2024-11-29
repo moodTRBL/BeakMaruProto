@@ -53,14 +53,14 @@ class FollowRepositoryTest(
         for (member in members) {
             val list = memberRepository.findFollowers(member.id!!)
             list.doOnNext { follow ->
-                //println("my id: ${member.id}, follower id: ${follow.memberId}")
+                println("my id: ${member.id}, follower id: ${follow.memberId}")
                 follow.memberId shouldBe (member.id!! + 1)
             }
         }
         for (i in 1..4) {
             val list = memberRepository.findFollowings(members[i].id!!)
             list.doOnNext { follow ->
-                //println("my id: ${members[i].id}, following id: ${follow.memberId}")
+                println("my id: ${members[i].id}, following id: ${follow.memberId}")
                 follow.memberId shouldBe (members[i].id!! - 1)
             }
         }
@@ -87,8 +87,12 @@ class FollowRepositoryTest(
                 toId = members[i].id!!,
             ))
         }
-        followRepository.findAll().toList().size shouldBe 4
-        followRepository.deleteFollowing(members[0].id!!, members[1].id!!)
+        runBlocking {
+            followRepository.findAll().toList().size shouldBe 4
+            println("${members[0].id}, ${members[1].id}")
+            followRepository.deleteFollowing(members[0].id!!, members[1].id!!)
+            followRepository.deleteFollowing(members[0].id!!, members[2].id!!)
+        }
         followRepository.findAll().toList().size shouldBe 3
     }
 })

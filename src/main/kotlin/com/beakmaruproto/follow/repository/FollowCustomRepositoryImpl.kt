@@ -8,6 +8,7 @@ import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
 
 @Repository
 class FollowCustomRepositoryImpl @Autowired constructor(
@@ -36,7 +37,7 @@ class FollowCustomRepositoryImpl @Autowired constructor(
         val sql = """
             DELETE
             FROM follow f
-            WHERE f.from_id = :fromId and f.to_id = :toId
+            WHERE f.from_id =:fromId and f.to_id =:toId
         """.trimIndent()
         r2dbcEntityTemplate.databaseClient
             .sql(sql)

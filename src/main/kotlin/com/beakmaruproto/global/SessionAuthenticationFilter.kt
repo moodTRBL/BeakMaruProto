@@ -17,14 +17,7 @@ class SessionAuthenticationFilter : WebFilter {
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val request = exchange.request
-        log.info(
-            "{} : {} {}",
-            if (request.headers.getFirst("X-Forwarded-For") == null) request.remoteAddress else request.headers.getFirst(
-                "X-Forwarded-For"
-            ),
-            request.method,
-            request.uri.path
-        )
+        log.info("요청이 들어왔습니다. -> ${request.method} ${request.uri.path}")
         val list = permitList.filter { request.uri.path.contains(it) }
         if (list.isNotEmpty()) {
             return chain.filter(exchange)

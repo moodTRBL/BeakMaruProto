@@ -9,6 +9,7 @@ import com.beakmaruproto.member.dto.MemberUpdateDTO
 import com.beakmaruproto.member.repository.MemberRepository
 import kotlinx.coroutines.reactor.mono
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
@@ -17,7 +18,8 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 @Service
 class MemberServiceImpl @Autowired constructor(
     private val memberRepository: MemberRepository,
-    private val sseSendProcessor: SSESendProcessor
+    private val sseSendProcessor: SSESendProcessor,
+    private val passwordEncoder: PasswordEncoder
 ) : MemberService {
     override suspend fun signUp(memberSaveDTO: MemberSaveDTO): Mono<MemberDTO> {
         return validateMember(memberSaveDTO.username)
