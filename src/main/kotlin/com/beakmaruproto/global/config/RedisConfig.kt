@@ -1,6 +1,6 @@
 package com.beakmaruproto.global.config
 
-import com.beakmaruproto.global.ApplicationProperties
+import com.beakmaruproto.global.util.ApplicationProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

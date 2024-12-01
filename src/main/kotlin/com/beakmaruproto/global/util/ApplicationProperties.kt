@@ -1,4 +1,4 @@
-package com.beakmaruproto.global
+package com.beakmaruproto.global.util
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

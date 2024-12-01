@@ -2,20 +2,16 @@ package com.beakmaruproto.repository
 
 import com.beakmaruproto.follow.Follow
 import com.beakmaruproto.follow.repository.FollowRepository
+import com.beakmaruproto.follow.repository.FollowRepositoryCustom
 import com.beakmaruproto.member.Member
-import com.beakmaruproto.member.dto.MemberDTO
 import com.beakmaruproto.member.repository.MemberRepository
 import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.reactor.asFlux
-import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.reactor.mono
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
+import reactor.kotlin.test.test
 import reactor.test.StepVerifier
 
 @SpringBootTest
@@ -24,6 +20,7 @@ class FollowRepositoryTest(
     private val memberRepository: MemberRepository,
     private val r2dbcEntityTemplate: R2dbcEntityTemplate
 ) : FunSpec({
+
     afterTest {
         r2dbcEntityTemplate.databaseClient.sql("SET FOREIGN_KEY_CHECKS=0").fetch().rowsUpdated().block()
         r2dbcEntityTemplate.databaseClient.sql("TRUNCATE TABLE member").fetch().rowsUpdated().block()
@@ -51,18 +48,18 @@ class FollowRepositoryTest(
         }
 
         for (member in members) {
-            val list = memberRepository.findFollowers(member.id!!)
-            list.doOnNext { follow ->
-                println("my id: ${member.id}, follower id: ${follow.memberId}")
-                follow.memberId shouldBe (member.id!! + 1)
-            }
+            memberRepository.findFollowers(member.id!!)
+                .forEach { follower->
+                    println("my id: ${member.id}, following id: ${follower.memberId}")
+                    follower.memberId shouldBe (member.id!! + 1)
+                }
         }
         for (i in 1..4) {
-            val list = memberRepository.findFollowings(members[i].id!!)
-            list.doOnNext { follow ->
-                println("my id: ${members[i].id}, following id: ${follow.memberId}")
-                follow.memberId shouldBe (members[i].id!! - 1)
-            }
+            memberRepository.findFollowings(members[i].id!!)
+                .forEach { follower->
+                    println("my id: ${members[i].id}, following id: ${follower.memberId}")
+                    follower.memberId shouldBe (members[i].id!! - 1)
+                }
         }
     }
 
@@ -82,17 +79,14 @@ class FollowRepositoryTest(
             members.add(member)
         }
         for (i in 1..4) {
-            val follow = followRepository.save(Follow(
+            followRepository.save(Follow(
                 fromId = members[0].id!!,
                 toId = members[i].id!!,
             ))
         }
-        runBlocking {
-            followRepository.findAll().toList().size shouldBe 4
-            println("${members[0].id}, ${members[1].id}")
-            followRepository.deleteFollowing(members[0].id!!, members[1].id!!)
-            followRepository.deleteFollowing(members[0].id!!, members[2].id!!)
-        }
-        followRepository.findAll().toList().size shouldBe 3
+        followRepository.findAll().toList().size shouldBe 4
+        followRepository.deleteFollowing(members[0].id!!, members[1].id!!)
+        followRepository.deleteFollowing(members[0].id!!, members[2].id!!)
+        followRepository.findAll().toList().size shouldBe 2
     }
 })

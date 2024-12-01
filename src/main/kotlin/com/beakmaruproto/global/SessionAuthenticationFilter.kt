@@ -12,7 +12,8 @@ class SessionAuthenticationFilter : WebFilter {
 
     private val log = logger()
     private val permitList: List<String> = listOf(
-        "/member"
+        "/member",
+        "test"
     )
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {

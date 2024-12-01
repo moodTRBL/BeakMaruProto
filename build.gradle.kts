@@ -55,6 +55,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     runtimeOnly("io.asyncer:r2dbc-mysql")
     runtimeOnly("com.mysql:mysql-connector-j")
+    implementation ("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 
     //kotest
     testImplementation("io.kotest:kotest-runner-junit5:5.4.2")

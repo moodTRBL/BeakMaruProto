@@ -1,4 +1,4 @@
-package com.beakmaruproto.global
+package com.beakmaruproto.global.service
 
 import com.beakmaruproto.global.dto.MessageDTO
 import com.beakmaruproto.logger
@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.Sinks
+import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
 
 @Component
-class SSESendProcessor {
+class SSESendService {
     val sinks = ConcurrentHashMap<Long, Sinks.Many<ServerSentEvent<Any>>>()
     val log = logger()
 
@@ -19,10 +21,14 @@ class SSESendProcessor {
             return sinks[memberId]!!.asFlux()
         }
         sinks[memberId] = Sinks.many().multicast().onBackpressureBuffer()
-        return sinks[memberId]!!.asFlux().doOnCancel {
-            log.info("SSE Notification Cancelled by client: $memberId")
-            finish(memberId)
-        }
+        return sinks[memberId]!!.asFlux()
+            .timeout(Duration.ofMinutes(5))
+            .doOnCancel {
+                log.info("SSE Notification Cancelled by client: $memberId")
+                finish(memberId)
+            }.doOnTerminate {
+                sinks.remove(memberId)
+            }
     }
 
     fun personalSend(memberId: Long, messageDTO: MessageDTO) {

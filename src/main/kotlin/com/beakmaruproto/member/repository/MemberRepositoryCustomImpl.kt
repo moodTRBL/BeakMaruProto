@@ -14,7 +14,7 @@ class MemberRepositoryCustomImpl @Autowired constructor(
     private val r2dbcEntityTemplate: R2dbcEntityTemplate,
     private val r2dbcConverter: MappingR2dbcConverter
 ) : MemberRepositoryCustom {
-    override suspend fun findFollowers(memberId: Long): Flux<MemberDTO> {
+    override suspend fun findFollowers(memberId: Long): List<MemberDTO> {
         val sql = """
             SELECT
                 f.to_id as member_id,
@@ -33,9 +33,11 @@ class MemberRepositoryCustomImpl @Autowired constructor(
             .bind("memberId", memberId)
             .map { row,metaData -> r2dbcConverter.read(MemberDTO::class.java, row) }
             .all()
+            .collectList()
+            .awaitSingle()
     }
 
-    override suspend fun findFollowings(memberId: Long): Flux<MemberDTO> {
+    override suspend fun findFollowings(memberId: Long): List<MemberDTO> {
         val sql = """
             SELECT
                 f.from_id as member_id,
@@ -54,5 +56,7 @@ class MemberRepositoryCustomImpl @Autowired constructor(
             .bind("memberId", memberId)
             .map { row,metaData -> r2dbcConverter.read(MemberDTO::class.java, row) }
             .all()
+            .collectList()
+            .awaitSingle()
     }
 }

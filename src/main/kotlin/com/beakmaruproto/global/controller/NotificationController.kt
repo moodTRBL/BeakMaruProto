@@ -1,6 +1,6 @@
 package com.beakmaruproto.global.controller
 
-import com.beakmaruproto.global.SSESendProcessor
+import com.beakmaruproto.global.service.SSESendService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -16,18 +16,18 @@ import java.util.concurrent.atomic.AtomicInteger
 
 @Controller
 class NotificationController @Autowired constructor(
-    private val sseSendProcessor: SSESendProcessor
+    private val sseSendService: SSESendService
 ) {
     @GetMapping(value = ["/sse"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     @ResponseBody
     fun seeConnect(@RequestHeader("memberId") memberId: Long): Flux<ServerSentEvent<Any>> {
-        return sseSendProcessor.connect(memberId)
+        return sseSendService.connect(memberId)
     }
 
     @GetMapping("/sse/connect")
     @ResponseBody
     fun sseSuccessConnect(@RequestHeader("memberId") memberId: Long): Mono<ResponseEntity<Boolean>> {
-        return sseSendProcessor.successMessageSend(memberId)
+        return sseSendService.successMessageSend(memberId)
             .map { it -> ResponseEntity.ok(it) }
     }
 

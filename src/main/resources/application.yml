@@ -81,6 +81,9 @@ spring:
     redis:
       host: localhost
       port: 6379
+    mongodb:
+      uri: mongodb+srv://root:root@marucluster.8mkhq.mongodb.net/?retryWrites=true&w=majority&appName=MaruCluster
+      database: chat
   session:
     store-type: redis
     redis:

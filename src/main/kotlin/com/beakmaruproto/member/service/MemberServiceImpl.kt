@@ -1,7 +1,7 @@
 package com.beakmaruproto.member.service
 
 import com.beakmaruproto.global.NotificationType
-import com.beakmaruproto.global.SSESendProcessor
+import com.beakmaruproto.global.service.SSESendService
 import com.beakmaruproto.member.dto.MemberDTO
 import com.beakmaruproto.member.dto.MemberLoginDTO
 import com.beakmaruproto.member.dto.MemberSaveDTO
@@ -18,14 +18,14 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 @Service
 class MemberServiceImpl @Autowired constructor(
     private val memberRepository: MemberRepository,
-    private val sseSendProcessor: SSESendProcessor,
+    private val sseSendService: SSESendService,
     private val passwordEncoder: PasswordEncoder
 ) : MemberService {
     override suspend fun signUp(memberSaveDTO: MemberSaveDTO): Mono<MemberDTO> {
         return validateMember(memberSaveDTO.username)
             .then(mono { memberRepository.save(memberSaveDTO.toEntity()) })
             .flatMap { it -> it.toDto() }
-            .doOnNext{ sseSendProcessor.personalSend(it.memberId, NotificationType.to(NotificationType.MEMBER_SAVE)) }
+            .doOnNext{ sseSendService.personalSend(it.memberId, NotificationType.to(NotificationType.MEMBER_SAVE)) }
     }
 
     override suspend fun signIn(memberLoginDTO: MemberLoginDTO): Mono<MemberDTO> {
@@ -41,7 +41,7 @@ class MemberServiceImpl @Autowired constructor(
             .flatMap { findMember -> memberUpdateDTO.toUpdateEntity(findMember) }
             .flatMap { updateMember -> mono { memberRepository.save(updateMember) } }
             .flatMap { it -> it.toDto() }
-            .doOnNext{ sseSendProcessor.personalSend(it.memberId, NotificationType.to(NotificationType.MEMBER_UPDATE)) }
+            .doOnNext{ sseSendService.personalSend(it.memberId, NotificationType.to(NotificationType.MEMBER_UPDATE)) }
     }
 
     override fun getMember(username: String): Mono<MemberDTO> {

@@ -23,6 +23,14 @@ CREATE TABLE follow (
     FOREIGN KEY (to_id) REFERENCES member(id)
 );
 
+DROP TABLE IF EXISTS chat_room;
+CREATE TABLE chat_room (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    board_id BIGINT NOT NULL,
+    create_time DATETIME NOT NULL,
+    FOREIGN KEY (board_id) REFERENCES board(id)
+);
+
 DROP TABLE IF EXISTS board;
 CREATE TABLE board (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
